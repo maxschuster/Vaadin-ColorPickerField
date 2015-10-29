@@ -1,0 +1,8 @@
+.color-picker-area-field .v-colorpicker {
+    width: 100%;
+    height: 100%;
+}
+
+.color-picker-area-field .v-colorpicker .v-caption {
+    display: none;
+}

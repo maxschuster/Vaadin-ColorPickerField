@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!--
+Copyright 2015 Max Schuster.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<html>
+    <head>
+        <meta name="package-mapping" content="addon:eu.maxschuster.vaadin.colorpickerfield" />
+    </head>
+    <body>
+        <v-vertical-layout size-full="">
+            <v-panel caption="Vaadin-ColorPickerField" size-auto="" :center="" :middle="">
+                <v-horizontal-layout>
+                    <v-vertical-layout margin="" spacing="" :center="" :middle="">
+                        <addon-color-picker-field _id="colorPickerField" size-full="" caption="ColorPicker:" />
+                        <addon-color-picker-area-field _id="colorPickerAreaField" size-full="" caption="ColorPickerArea:" />
+                    </v-vertical-layout>
+                    <v-vertical-layout margin="" spacing="" width="300px" :center="" :middle="">
+                        <v-combo-box _id="converterComboBox" caption="Converter:" width="100%" />
+                        <v-text-field _id="colorTextField" caption="Value:" immediate="true" width="100%" />
+                    </v-vertical-layout>
+                </v-horizontal-layout>
+            </v-panel>
+        </v-vertical-layout>
+    </body>
+</html>
