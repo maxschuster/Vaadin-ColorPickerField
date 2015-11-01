@@ -15,19 +15,21 @@
  */
 package eu.maxschuster.vaadin.colorpickerfield.converter;
 
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.shared.ui.colorpicker.Color;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * A {@link Converter} that can convert a {@link Color} to CSS rgb() color
+ * notation and back
  *
  * @author Max Schuster
  */
 public class RgbToColorConverter extends AbstractStringToColorConverter {
 
-    private static final long serialVersionUID = 1L;
-    
+    private static final long serialVersionUID = 2L;
+
     private static final Pattern RGB_PATTERN = Pattern.compile(
             "^rgb\\(\\s*(\\d{0,3})\\s*,\\s*(\\d{0,3})\\s*,\\s*(\\d{0,3})\\s*\\)$",
             Pattern.CASE_INSENSITIVE);
@@ -37,24 +39,24 @@ public class RgbToColorConverter extends AbstractStringToColorConverter {
     }
 
     @Override
-    public String formatCssString(Color color) throws ConversionException {
+    protected String serialize(Color color) throws ConversionException {
         return String.format("rgb(%d,%d,%d)",
                 color.getRed(), color.getGreen(), color.getBlue());
     }
 
     @Override
-    public Color parseCssString(String cssString) throws ConversionException {
-        Matcher m = RGB_PATTERN.matcher(cssString);
+    protected Color unserialize(String string) throws ConversionException {
+        Matcher m = RGB_PATTERN.matcher(string);
         if (!m.matches()) {
-            throw new ConversionException("Could not convert '" + cssString + 
-                    "' to a css rgb color");
+            throw new ConversionException("Could not convert '" + string
+                    + "' to a css rgb color");
         }
         int red = parseColor(m.group(1));
         int greed = parseColor(m.group(2));
         int blue = parseColor(m.group(3));
         return new Color(red, greed, blue);
     }
-    
+
     protected int parseColor(String colorString) throws ConversionException {
         if (colorString == null) {
             throw new ConversionException("Color string mustn't be null");
@@ -63,13 +65,13 @@ public class RgbToColorConverter extends AbstractStringToColorConverter {
         try {
             color = Integer.valueOf(colorString);
         } catch (NumberFormatException e) {
-            throw new ConversionException("Can't convert color string '" + 
-                    colorString + "' to integer", e);
+            throw new ConversionException("Can't convert color string '"
+                    + colorString + "' to integer", e);
         }
         if (color < 0 || color > 255) {
             throw new ConversionException("Illegal value of color '" + color + "'");
         }
         return color;
     }
-    
+
 }

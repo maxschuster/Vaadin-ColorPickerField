@@ -19,17 +19,32 @@ import com.vaadin.data.util.converter.Converter;
 import com.vaadin.shared.ui.colorpicker.Color;
 
 /**
+ * A {@link Converter} that can convert a {@link Color} to a presentation
  *
  * @author Max Schuster
+ * @param <PRESENTATION> The presentation type. Must be compatible with what
+ * {@link #getPresentationType()} returns.
  */
 public abstract class AbstractToColorConverter<PRESENTATION> implements Converter<PRESENTATION, Color> {
 
     private static final long serialVersionUID = 1L;
-    
+
+    /**
+     * The presentation type
+     */
     private final Class<PRESENTATION> presentationType;
-    
+
+    /**
+     * The model type
+     */
     private final Class<Color> modelType = Color.class;
 
+    /**
+     * Constructs an {@link AbstractToColorConverter} for the given presentation
+     * type
+     *
+     * @param presentationType Presentation type
+     */
     public AbstractToColorConverter(Class<PRESENTATION> presentationType) {
         this.presentationType = presentationType;
     }

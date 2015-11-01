@@ -28,19 +28,17 @@ public class HexToColorConverterTest extends
     public HexToColorConverterTest() {
         super(new HexToColorConverter(),
                 Arrays.asList(new Color[]{
-                    new Color(255, 255, 255),
-                    new Color(15, 224, 0),
-                    new Color(255, 255, 255),
-                    new Color(0, 0, 0)
-                }),
+            new Color(255, 255, 255),
+            new Color(15, 224, 0),
+            new Color(255, 255, 255),
+            new Color(0, 0, 0)
+        }),
                 Arrays.asList(new String[]{
-                    "#ffFFff",
-                    "#0FE000",
-                    "#ffffff",
-                    "#000000"
-                }));
+            "#ffFFff",
+            "#0FE000",
+            "#ffffff",
+            "#000000"
+        }));
     }
-    
-    
-    
+
 }

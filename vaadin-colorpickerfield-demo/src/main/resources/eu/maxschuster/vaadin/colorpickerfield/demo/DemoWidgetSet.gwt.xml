@@ -29,4 +29,8 @@
 
     <inherits name="com.vaadin.DefaultWidgetSet" />
     
+    <generate-with class="eu.maxschuster.vaadin.colorpickerfield.demo.OptimizedConnectorBundleLoaderFactory">
+        <when-type-assignable class="com.vaadin.client.metadata.ConnectorBundleLoader" />
+    </generate-with>
+    
 </module>

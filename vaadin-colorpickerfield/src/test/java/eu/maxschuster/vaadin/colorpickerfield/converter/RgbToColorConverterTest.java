@@ -28,17 +28,15 @@ public class RgbToColorConverterTest extends
     public RgbToColorConverterTest() {
         super(new RgbToColorConverter(),
                 Arrays.asList(new Color[]{
-                    new Color(255, 255, 255),
-                    new Color(15, 224, 0),
-                    new Color(0, 0, 0)
-                }),
+            new Color(255, 255, 255),
+            new Color(15, 224, 0),
+            new Color(0, 0, 0)
+        }),
                 Arrays.asList(new String[]{
-                    "rgb(255,255,255)",
-                    "rgb(15,224,0)",
-                    "rgb(0,0,0)"
-                }));
+            "rgb(255,255,255)",
+            "rgb(15,224,0)",
+            "rgb(0,0,0)"
+        }));
     }
-    
-    
-    
+
 }

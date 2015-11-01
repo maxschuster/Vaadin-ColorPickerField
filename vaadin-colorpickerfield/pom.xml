@@ -4,9 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>eu.maxschuster</groupId>
     <artifactId>vaadin-colorpickerfield</artifactId>
-    <packaging>jar</packaging>
-    <version>1.0.0</version>
+    <packaging>bundle</packaging>
+    <version>1.0.0-alpha-1</version>
+    
     <name>ColorPickerField</name>
+    <description>Vaadin color picker field.</description>
+    <url>https://github.com/maxschuster/Vaadin-ColorPickerField</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -22,24 +25,31 @@
         <Vaadin-Addon>${project.artifactId}-${project.version}.jar</Vaadin-Addon>
     </properties>
 
-    <!--     
-	<organization>
-		<name>My Name</name>
-		<url>https://github.com/mygithubaccount/ColorPickerField/</url>
-	</organization>
+    <organization>
+        <name>Max Schuster</name>
+        <url>https://github.com/maxschuster/</url>
+    </organization>
     
-	<scm>
-		<url>git://github.com/mygithubaccount/ColorPickerField.git</url>
-		<connection>scm:git:git://github.com/mygithubaccount/ColorPickerField.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com:/mygithubaccount/${ComponentClassName}.git</developerConnection>
-		<tag>ColorPickerField add-on for Vaadin</tag>
-	</scm>
+    <developers>
+        <developer>
+            <name>Max Schuster</name>
+            <email>dev@maxschuster.eu</email>
+            <url>https://github.com/maxschuster</url>
+            <id>maxschuster</id>
+        </developer>
+    </developers>
 
-        <issueManagement>
-                <system>GitHub</system>
-                <url>https://github.com/mygithubaccount/ColorPickerField/issues</url>
-        </issueManagement>
-    -->
+    <scm>
+        <url>https://github.com/maxschuster/Vaadin-ColorPickerField.git</url>
+        <connection>scm:git:https://github.com/maxschuster/Vaadin-ColorPickerField.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:maxschuster/Vaadin-ColorPickerField.git</developerConnection>
+        <tag>${project.version}}</tag>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/maxschuster/Vaadin-ColorPickerField/issues</url>
+    </issueManagement>
 
     <licenses>
         <license>
@@ -48,36 +58,17 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-
-    <repositories>
+    
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
         <repository>
-            <id>vaadin-addons</id>
-            <url>http://maven.vaadin.com/vaadin-addons</url>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
-        <repository>
-            <id>vaadin-snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>vaadin-snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+    </distributionManagement>
 
     <dependencies>
         <dependency>
@@ -180,6 +171,61 @@
                         <phase>install</phase>
                     </execution>
                 </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <version>3.0.0</version>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+                        <Export-Package>
+                            eu.maxschuster.vaadin.colorpickerfield,
+                            eu.maxschuster.vaadin.colorpickerfield.converter,
+                            eu.maxschuster.vaadin.colorpickerfield.shared
+                        </Export-Package>
+                        <Import-Package>!com.google.gwt.*,!com.vaadin.client.*,*</Import-Package>
+                        <_noee>true</_noee>
+                    </instructions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.5</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
             </plugin>
 
             <!-- Testing -->

@@ -15,18 +15,21 @@
  */
 package eu.maxschuster.vaadin.colorpickerfield.converter;
 
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.shared.ui.colorpicker.Color;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * A {@link Converter} that can convert a {@link Color} to CSS rgba() color
+ * notation and back
  *
  * @author Max Schuster
  */
 public class RgbaToColorConverter extends RgbToColorConverter {
 
-    private static final long serialVersionUID = 1L;
-    
+    private static final long serialVersionUID = 2L;
+
     private static final Pattern RGBA_PATTERN = Pattern.compile(
             "^rgba\\(\\s*(\\d{0,3})\\s*,\\s*(\\d{0,3})\\s*,\\s*(\\d{0,3})\\s*,\\s*([01](\\.\\d+)?)\\s*\\)$",
             Pattern.CASE_INSENSITIVE);
@@ -36,24 +39,24 @@ public class RgbaToColorConverter extends RgbToColorConverter {
     }
 
     @Override
-    public String formatCssString(Color color) throws ConversionException {
+    protected String serialize(Color color) throws ConversionException {
         double alpha = intToDouble(color.getAlpha());
         String alphaString;
-        if (alpha == (long)alpha) {
-            alphaString = String.format("%d", (long)alpha);
+        if (alpha == (long) alpha) {
+            alphaString = String.format("%d", (long) alpha);
         } else {
             alphaString = String.format("%s", alpha);
         }
-        return String.format("rgba(%d,%d,%d,%s)", color.getRed(), 
+        return String.format("rgba(%d,%d,%d,%s)", color.getRed(),
                 color.getGreen(), color.getBlue(), alphaString);
     }
 
     @Override
-    public Color parseCssString(String cssString) throws ConversionException {
-        Matcher m = RGBA_PATTERN.matcher(cssString);
+    protected Color unserialize(String string) throws ConversionException {
+        Matcher m = RGBA_PATTERN.matcher(string);
         if (!m.matches()) {
-            throw new ConversionException("Could not convert '" + cssString + 
-                    "' to a css rgb color");
+            throw new ConversionException("Could not convert '" + string
+                    + "' to a css rgb color");
         }
         int red = parseColor(m.group(1));
         int greed = parseColor(m.group(2));
@@ -61,7 +64,7 @@ public class RgbaToColorConverter extends RgbToColorConverter {
         int alpha = parseAlpha(m.group(4));
         return new Color(red, greed, blue, alpha);
     }
-    
+
     protected int parseAlpha(String colorString) throws ConversionException {
         if (colorString == null) {
             throw new ConversionException("Color string mustn't be null");
@@ -70,21 +73,21 @@ public class RgbaToColorConverter extends RgbToColorConverter {
         try {
             alpha = Double.valueOf(colorString);
         } catch (NumberFormatException e) {
-            throw new ConversionException("Can't convert color string '" + 
-                    colorString + "' to double", e);
+            throw new ConversionException("Can't convert color string '"
+                    + colorString + "' to double", e);
         }
         if (alpha < 0 || alpha > 1) {
             throw new ConversionException("Illegal value of color '" + alpha + "'");
         }
         return doubleToInt(alpha);
     }
-    
+
     protected double intToDouble(int alpha) {
         return alpha / 255d;
     }
-    
+
     protected int doubleToInt(double alpha) {
         return (int) Math.round(alpha * 255d);
     }
-    
+
 }

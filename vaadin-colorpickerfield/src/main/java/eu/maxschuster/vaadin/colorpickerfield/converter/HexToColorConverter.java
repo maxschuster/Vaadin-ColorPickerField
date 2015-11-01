@@ -15,33 +15,35 @@
  */
 package eu.maxschuster.vaadin.colorpickerfield.converter;
 
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.shared.ui.colorpicker.Color;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
+ * A {@link Converter} that can convert a {@link Color} to CSS hex color
+ * notation and back
+ * 
  * @author Max Schuster
  */
 public class HexToColorConverter extends AbstractStringToColorConverter {
 
-    private static final long serialVersionUID = 1L;
-    
+    private static final long serialVersionUID = 2L;
+
     private static final Pattern HEX_PATTERN = Pattern.compile(
             "^(#)?([0-9a-f]{3}|[0-9a-f]{6})$", Pattern.CASE_INSENSITIVE);
 
     @Override
-    public String formatCssString(Color color) throws ConversionException {
+    protected String serialize(Color color) throws ConversionException {
         return color.getCSS();
     }
 
     @Override
-    public Color parseCssString(String cssString) throws ConversionException {
-        Matcher m = HEX_PATTERN.matcher(cssString);
+    protected Color unserialize(String string) throws ConversionException {
+        Matcher m = HEX_PATTERN.matcher(string);
         if (!m.matches()) {
-            throw new ConversionException("Could not convert '" + cssString + 
-                    "' to a css hex color");
+            throw new ConversionException("Could not convert '" + string
+                    + "' to a css hex color");
         }
         String hex = m.group(2);
         if (hex.length() == 3) {
@@ -54,5 +56,5 @@ public class HexToColorConverter extends AbstractStringToColorConverter {
         }
         return new Color(Integer.parseInt(hex, 16));
     }
-    
+
 }

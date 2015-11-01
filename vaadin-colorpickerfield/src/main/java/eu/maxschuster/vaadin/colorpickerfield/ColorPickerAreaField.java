@@ -27,9 +27,9 @@ import com.vaadin.ui.ColorPickerArea;
 public class ColorPickerAreaField extends AbstractColorPickerField<ColorPickerArea> {
 
     private static final long serialVersionUID = 1L;
-    
+
     private static final String STYLE_NAME = "color-picker-area-field";
-    
+
     public ColorPickerAreaField() {
         this(DEFAULT_POPUP_CAPTION, DEFAULT_INITIAL_COLOR);
     }
@@ -42,5 +42,5 @@ public class ColorPickerAreaField extends AbstractColorPickerField<ColorPickerAr
         super(ColorPickerArea.class, popupCaption, initialColor);
         setPrimaryStyleName(STYLE_NAME);
     }
-    
+
 }

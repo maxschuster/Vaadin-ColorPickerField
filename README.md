@@ -1,10 +1,11 @@
 # ColorPickerField Add-on for Vaadin 7
 
-ColorPickerField is an UI component add-on for Vaadin 7.
+ColorPickerField is an UI component add-on for Vaadin 7. It implements the Field
+interface and makes it possible to bind a datasource to a color picker
 
 ## Online demo
 
-Try the add-on demo at <url of the online demo>
+Try the add-on demo at https://maxschuster.jelastic.servint.net/ColorPickerField/
 
 ## Download release
 
@@ -12,7 +13,7 @@ Official releases of this add-on are available at Vaadin Directory. For Maven in
 
 ## Building and running demo
 
-git clone <url of the ColorPickerField repository>
+git clone https://github.com/maxschuster/Vaadin-ColorPickerField
 mvn clean install
 cd demo
 mvn jetty:run
@@ -57,9 +58,9 @@ Another way of debugging client-side is superdev mode. To enable it, uncomment d
 
 ## Roadmap
 
-This component is developed as a hobby with no public roadmap or any guarantees of upcoming releases. That said, the following features are planned for upcoming releases:
-- ...
-- ...
+This component is developed as a hobby with no public roadmap or any guarantees of upcoming releases.
+That said, the following features are planned for upcoming releases:
+- None so far...
 
 ## Issue tracking
 
@@ -79,7 +80,7 @@ Contributions are welcome, but there are no guarantees that they are accepted as
 
 Add-on is distributed under Apache License 2.0. For license terms, see LICENSE.txt.
 
-ColorPickerField is written by <...>
+ColorPickerField is written by Max Schuster
 
 # Developer Guide
 
@@ -87,24 +88,22 @@ ColorPickerField is written by <...>
 
 Here is a simple example on how to try out the add-on component:
 
-<...>
+```java
+ColorPickerField cpf = new ColorPickerField();
+cpf.setCaption("ColorPicker");
+layout.addComponent(cpf);
 
-For a more comprehensive example, see src/test/java/org/vaadin/template/demo/DemoUI.java
+TextField tf = new TextField();
+tf.setConverter(new RgbToColorConverter());
+layout.addComponent(tf);
+```
+
+For a more comprehensive example, see vaadin-colorpickerfield-demo/src/main/java/eu/maxschuster/vaadin/colorpickerfield/demo/DemoUI.java
 
 ## Features
 
-### Feature A
-
-<...>
-
-### Feature B
-
-<...>
-
-### Feature C
-
-<...>
+### Bind a color picker to a property datasource
 
 ## API
 
-ColorPickerField JavaDoc is available online at <...>
+~~ColorPickerField JavaDoc is available online at <...>~~

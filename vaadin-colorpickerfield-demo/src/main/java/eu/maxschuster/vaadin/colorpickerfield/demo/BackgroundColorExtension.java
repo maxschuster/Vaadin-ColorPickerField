@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Max.
+ * Copyright 2015 Max Schuster.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,20 +21,61 @@ import com.vaadin.server.AbstractJavaScriptExtension;
 import com.vaadin.shared.ui.colorpicker.Color;
 
 /**
- *
+ * A small javascript extension that changes the background color of an
+ * {@link AbstractClientConnector}
+ * 
  * @author Max Schuster
  */
 @JavaScript("BackgroundColorExtension.js")
 public class BackgroundColorExtension extends AbstractJavaScriptExtension {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
     
+    /**
+     * The current background color
+     */
+    private Color backgoundColor;
+    
+    /**
+     * Extends the given {@link AbstractClientConnector}
+     * @param connector Connector to extend
+     */
     public BackgroundColorExtension(AbstractClientConnector connector) {
         extend(connector);
     }
+
+    /**
+     * Gets the current background color
+     * @return Current background color
+     */
+    public Color getBackgoundColor() {
+        return backgoundColor;
+    }
     
-    public void setBackgoundColor(Color color) {
-        String string = color != null ? color.getCSS() : null;
+    /**
+     * Sets the current background color
+     * @param backgroundColor New background color
+     */
+    public void setBackgoundColor(Color backgroundColor) {
+        this.backgoundColor = backgroundColor;
+        updateBackgroundColor();
+    }
+
+    @Override
+    public void beforeClientResponse(boolean initial) {
+        super.beforeClientResponse(initial);
+        if (initial) {
+            // Restore background color after reload
+            updateBackgroundColor();
+        }
+    }
+    
+    /**
+     * Update the background color at the client-side
+     */
+    protected void updateBackgroundColor() {
+        // being null-save here
+        String string = backgoundColor != null ? backgoundColor.getCSS() : null;
         callFunction("setBackgoundColor", string);
     }
     

@@ -16,6 +16,8 @@
 package eu.maxschuster.vaadin.colorpickerfield.demo;
 
 import com.vaadin.annotations.DesignRoot;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -24,18 +26,21 @@ import eu.maxschuster.vaadin.colorpickerfield.ColorPickerAreaField;
 import eu.maxschuster.vaadin.colorpickerfield.ColorPickerField;
 
 /**
- *
+ * Demo layout fields
+ * 
  * @author Max Schuster
  */
 @DesignRoot
 public class DemoUILayout extends VerticalLayout {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
     
     public ComboBox converterComboBox;
     public ColorPickerField colorPickerField;
     public ColorPickerAreaField colorPickerAreaField;
     public TextField colorTextField;
+    public CheckBox readOnlyCheckBox;
+    public Button clearButton;
     
     public DemoUILayout() {
         Design.read(this);

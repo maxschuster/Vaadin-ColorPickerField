@@ -25,7 +25,7 @@ import com.vaadin.ui.ColorPicker;
 public class ColorPickerField extends AbstractColorPickerField<ColorPicker> {
 
     private static final long serialVersionUID = 1L;
-    
+
     private static final String STYLE_NAME = "color-picker-field";
 
     public ColorPickerField() {
@@ -40,5 +40,5 @@ public class ColorPickerField extends AbstractColorPickerField<ColorPicker> {
         super(ColorPicker.class, popupCaption, initialColor);
         setPrimaryStyleName(STYLE_NAME);
     }
-    
+
 }

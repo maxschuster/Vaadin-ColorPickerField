@@ -30,14 +30,14 @@ import static org.junit.Assert.assertNull;
  * @author Max Schuster
  */
 public abstract class AbstractStringToColorConverterTest<CONVERTER extends AbstractStringToColorConverter> {
-    
+
     private final CONVERTER converter;
-    
+
     private final List<Color> models;
-    
+
     private final List<String> presentations;
 
-    public AbstractStringToColorConverterTest(CONVERTER converter, 
+    public AbstractStringToColorConverterTest(CONVERTER converter,
             List<Color> models, List<String> presentations) {
         this.converter = converter;
         this.models = Collections.unmodifiableList(models);
@@ -55,7 +55,7 @@ public abstract class AbstractStringToColorConverterTest<CONVERTER extends Abstr
     public List<String> getPresentations() {
         return presentations;
     }
-    
+
     @Test
     public void convertModelToPresentation() {
         assertEquals(models.size(), presentations.size());
@@ -64,15 +64,15 @@ public abstract class AbstractStringToColorConverterTest<CONVERTER extends Abstr
         for (int i = 0; i < size; i++) {
             String presentation = presentations.get(i);
             Color model = models.get(i);
-            String convertedPresentation =
-                    conv.convertToPresentation(model, String.class, Locale.US);
-            assertEquals("Error converting model '" + model.getCSS() + 
-                    "' to presentation '" + presentation + "'", 
+            String convertedPresentation
+                    = conv.convertToPresentation(model, String.class, Locale.US);
+            assertEquals("Error converting model '" + model.getCSS()
+                    + "' to presentation '" + presentation + "'",
                     convertedPresentation.toLowerCase(),
                     presentation.toLowerCase());
         }
     }
-    
+
     @Test
     public void convertPresentationToModel() {
         assertEquals(models.size(), presentations.size());
@@ -81,23 +81,23 @@ public abstract class AbstractStringToColorConverterTest<CONVERTER extends Abstr
         for (int i = 0; i < size; i++) {
             String presentation = presentations.get(i);
             Color model = models.get(i);
-            Color convertedModel =
-                    conv.convertToModel(presentation, Color.class, Locale.US);
-            assertEquals("Error converting presentation '" + presentation + 
-                    "' to model '" + model.getCSS() + "'", convertedModel, model);
+            Color convertedModel
+                    = conv.convertToModel(presentation, Color.class, Locale.US);
+            assertEquals("Error converting presentation '" + presentation
+                    + "' to model '" + model.getCSS() + "'", convertedModel, model);
         }
     }
-    
+
     @Test
     public void convertNullModelToPresentationShouldReturnNull() {
         CONVERTER conv = getConverter();
         assertNull(conv.convertToPresentation(null, String.class, Locale.US));
     }
-    
+
     @Test
     public void convertNullPresentationToModelShouldReturnNull() {
         CONVERTER conv = getConverter();
         assertNull(conv.convertToModel(null, Color.class, Locale.US));
     }
-    
+
 }

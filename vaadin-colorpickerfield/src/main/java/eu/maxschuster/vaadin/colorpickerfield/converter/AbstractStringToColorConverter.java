@@ -15,39 +15,62 @@
  */
 package eu.maxschuster.vaadin.colorpickerfield.converter;
 
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.shared.ui.colorpicker.Color;
 import java.util.Locale;
 
 /**
+ * A {@link Converter} that can convert a {@link Color} to a {@link String}
+ * presentation
  *
  * @author Max Schuster
  */
 public abstract class AbstractStringToColorConverter extends AbstractToColorConverter<String> {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
+    /**
+     * Constructs a new {@link AbstractStringToColorConverter}
+     */
     public AbstractStringToColorConverter() {
         super(String.class);
     }
 
     @Override
-    public Color convertToModel(String value, Class<? extends Color> targetType, Locale locale) throws ConversionException {
+    public Color convertToModel(String value, Class<? extends Color> targetType,
+            Locale locale) throws ConversionException {
         if (value == null) {
             return null;
         }
-        return parseCssString(value);
+        return unserialize(value);
     }
 
     @Override
-    public String convertToPresentation(Color value, Class<? extends String> targetType, Locale locale) throws ConversionException {
+    public String convertToPresentation(Color value, Class<? extends String> targetType,
+            Locale locale) throws ConversionException {
         if (value == null) {
             return null;
         }
-        return formatCssString(value);
+        return serialize(value);
     }
-    
-    public abstract String formatCssString(Color color) throws ConversionException;
-    
-    public abstract Color parseCssString(String cssString) throws ConversionException;
-    
+
+    /**
+     * Serializes the given {@link Color} as a {@link String}. The String must
+     * be unserialize by {@link #unserialize(java.lang.String)}
+     *
+     * @param color The {@link Color} to serialize. Never {@code null}.
+     * @return {@link Color} serialized as {@link String}
+     * @throws ConversionException If the {@link Color} can't be serialized
+     */
+    protected abstract String serialize(Color color) throws ConversionException;
+
+    /**
+     * Unserializes the given {@link String} as a {@link Color}.
+     *
+     * @param string The {@link String} to unserialize. Never {@code null}.
+     * @return {@link String} unserialized as {@link Color}
+     * @throws ConversionException If the {@link String} can't be unserialized
+     */
+    protected abstract Color unserialize(String string) throws ConversionException;
+
 }

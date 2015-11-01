@@ -22,13 +22,15 @@ limitations under the License.
         <v-vertical-layout size-full="">
             <v-panel caption="Vaadin-ColorPickerField" size-auto="" :center="" :middle="">
                 <v-horizontal-layout>
-                    <v-vertical-layout margin="" spacing="" :center="" :middle="">
-                        <addon-color-picker-field _id="colorPickerField" size-full="" caption="ColorPicker:" />
-                        <addon-color-picker-area-field _id="colorPickerAreaField" size-full="" caption="ColorPickerArea:" />
-                    </v-vertical-layout>
+                    <v-form-layout margin="" spacing="" :center="" :middle="">
+                        <addon-color-picker-field _id="colorPickerField" size-full="" caption="ColorPicker(Field)" />
+                        <addon-color-picker-area-field _id="colorPickerAreaField" size-full="" caption="ColorPickerArea(Field):" />
+                    </v-form-layout>
                     <v-vertical-layout margin="" spacing="" width="300px" :center="" :middle="">
                         <v-combo-box _id="converterComboBox" caption="Converter:" width="100%" />
                         <v-text-field _id="colorTextField" caption="Value:" immediate="true" width="100%" />
+                        <v-check-box _id="readOnlyCheckBox" caption="ReadOnly" />
+                        <v-button _id="clearButton">Clear</v-button>
                     </v-vertical-layout>
                 </v-horizontal-layout>
             </v-panel>
