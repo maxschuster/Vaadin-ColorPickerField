@@ -17,11 +17,16 @@ package eu.maxschuster.vaadin.colorpickerfield;
 
 import com.vaadin.annotations.StyleSheet;
 import com.vaadin.shared.ui.colorpicker.Color;
+import com.vaadin.ui.ColorPicker;
 import com.vaadin.ui.ColorPickerArea;
+import com.vaadin.ui.Field;
 
 /**
- *
+ * A class that defines area-like implementation for a color picker {@link Field}.
+ * Wraps a {@link ColorPickerArea}.
+ * 
  * @author Max Schuster
+ * @see ColorPicker
  */
 @StyleSheet("ColorPickerAreaField.css")
 public class ColorPickerAreaField extends AbstractColorPickerField<ColorPickerArea> {
@@ -30,14 +35,28 @@ public class ColorPickerAreaField extends AbstractColorPickerField<ColorPickerAr
 
     private static final String STYLE_NAME = "color-picker-area-field";
 
+    /**
+     * Instantiates a new color picker area field.
+     */
     public ColorPickerAreaField() {
         this(DEFAULT_POPUP_CAPTION, DEFAULT_INITIAL_COLOR);
     }
 
+    /**
+     * Instantiates a new color picker area field.
+     * 
+     * @param popupCaption Caption of the popup window
+     */
     public ColorPickerAreaField(String popupCaption) {
         this(popupCaption, DEFAULT_INITIAL_COLOR);
     }
 
+    /**
+     * Instantiates a new color picker area field.
+     * 
+     * @param popupCaption Caption of the popup window
+     * @param initialColor Initial {@link Color}
+     */
     public ColorPickerAreaField(String popupCaption, Color initialColor) {
         super(ColorPickerArea.class, popupCaption, initialColor);
         setPrimaryStyleName(STYLE_NAME);

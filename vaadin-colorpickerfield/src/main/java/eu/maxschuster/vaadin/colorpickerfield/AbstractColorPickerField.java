@@ -25,7 +25,6 @@ import com.vaadin.ui.components.colorpicker.ColorChangeListener;
 import com.vaadin.ui.declarative.DesignAttributeHandler;
 import com.vaadin.ui.declarative.DesignContext;
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Logger;
 import org.jsoup.nodes.Attributes;
@@ -67,6 +66,11 @@ public abstract class AbstractColorPickerField<COLOR_PICKER extends AbstractColo
      */
     private Color nullRepresentation;
 
+    /**
+     * Show popup when content gets initialized
+     */
+    private boolean showPopup = false;
+
     /*
      * Properties passed to the color picker:
      */
@@ -98,7 +102,7 @@ public abstract class AbstractColorPickerField<COLOR_PICKER extends AbstractColo
      * Instantiates a new color picker field.
      *
      * @param pickerType Type of the wrapped color picker
-     * @param popupCaption the caption of the popup window
+     * @param popupCaption The caption of the popup window
      */
     public AbstractColorPickerField(Class<COLOR_PICKER> pickerType, String popupCaption) {
         this(pickerType, popupCaption, DEFAULT_INITIAL_COLOR);
@@ -108,8 +112,8 @@ public abstract class AbstractColorPickerField<COLOR_PICKER extends AbstractColo
      * Instantiates a new color picker.
      *
      * @param pickerType Type of the wrapped color picker
-     * @param popupCaption the caption of the popup window
-     * @param initialColor the initial color
+     * @param popupCaption The caption of the popup window
+     * @param initialColor The initial color
      */
     public AbstractColorPickerField(Class<COLOR_PICKER> pickerType, String popupCaption, Color initialColor) {
         if (pickerType == null) {
@@ -126,7 +130,7 @@ public abstract class AbstractColorPickerField<COLOR_PICKER extends AbstractColo
         try {
             Constructor<COLOR_PICKER> contructor
                     = colorPickerType.getDeclaredConstructor(String.class);
-            colorPicker = contructor.newInstance(getPopupCaption());
+            colorPicker = contructor.newInstance(popupCaption);
         } catch (ReflectiveOperationException ex) {
             // passthru all reflection exceptions because they should never happen
             throw new RuntimeException(ex);
@@ -148,6 +152,10 @@ public abstract class AbstractColorPickerField<COLOR_PICKER extends AbstractColo
 
         colorPicker.setColor(getClientColor(getInternalValue()));
         colorPicker.addColorChangeListener(this);
+
+        if (showPopup) {
+            colorPicker.showPopup();
+        }
 
         return colorPicker;
     }
@@ -232,25 +240,21 @@ public abstract class AbstractColorPickerField<COLOR_PICKER extends AbstractColo
         return caption;
     }
 
+    /**
+     * @return True if content has been initialized
+     */
     public boolean isContentInitialized() {
         return contentInitialized;
-    }
-
-    protected Collection<String> getColorPickerAttributes() {
-        ArrayList<String> c = new ArrayList<String>(0);
-
-        // custom attributes
-        c.add("color");
-        c.add("position");
-        c.add("popup-style");
-
-        return c;
     }
 
     @Override
     protected Collection<String> getCustomAttributes() {
         Collection<String> c = super.getCustomAttributes();
-        c.addAll(getColorPickerAttributes());
+
+        c.add("color");
+        c.add("position");
+        c.add("popup-style");
+
         return c;
     }
 
@@ -288,12 +292,21 @@ public abstract class AbstractColorPickerField<COLOR_PICKER extends AbstractColo
         DesignAttributeHandler.writeAttribute("color", attributes,
                 getClientColor(getValue()).getCSS(), Color.WHITE.getCSS(), String.class);
         DesignAttributeHandler.writeAttribute("popup-style", attributes,
-                (getPopupStyle() == AbstractColorPicker.PopupStyle.POPUP_NORMAL ? "normal" : "simple"),
+                (popupStyle == AbstractColorPicker.PopupStyle.POPUP_NORMAL ? "normal" : "simple"),
                 "normal", String.class);
         DesignAttributeHandler.writeAttribute("position", attributes, positionX
                 + "," + positionY, "0,0", String.class);
     }
 
+    /**
+     * Gets the {@link Color} that should be used for the
+     * {@link AbstractColorPicker}. Returns the given {@link Color} or a default
+     * value if the given {@link Color} is null {@code null}. The default value
+     * is eighter {@link #nullRepresentation} or {@link #defaultColor}
+     *
+     * @param color {@link Color} value
+     * @return A {@link Color} that is never null
+     */
     protected Color getClientColor(Color color) {
         if (color != null) {
             return color;
@@ -304,10 +317,20 @@ public abstract class AbstractColorPickerField<COLOR_PICKER extends AbstractColo
         }
     }
 
+    /**
+     * Gets the default {@link Color}
+     *
+     * @return The default {@link Color}
+     */
     public Color getDefaultColor() {
         return defaultColor;
     }
 
+    /**
+     * Sets the default {@link Color}
+     *
+     * @param defaultColor The default {@link Color}
+     */
     public void setDefaultColor(Color defaultColor) {
         if (defaultColor == null) {
             throw new NullPointerException("The default color mustn't be null!");
@@ -315,14 +338,32 @@ public abstract class AbstractColorPickerField<COLOR_PICKER extends AbstractColo
         this.defaultColor = defaultColor;
     }
 
+    /**
+     * Sets the {@link Color} that represents a {@code null} value.
+     *
+     * @param nullRepresentation {@link Color} that represents a {@code null}
+     * value.
+     */
     public void setNullRepresentation(Color nullRepresentation) {
         this.nullRepresentation = nullRepresentation;
     }
 
+    /**
+     * Gets the {@link Color} that represents a {@code null} value.
+     *
+     * @return {@link Color} that represents a {@code null} value.
+     */
     public Color getNullRepresentation() {
         return nullRepresentation;
     }
 
+    /**
+     * Set true if the component should show a default caption (css-code for the
+     * currently selected color, e.g. #ffffff) when no other caption is
+     * available.
+     *
+     * @param enabled Default caption enabled
+     */
     public void setDefaultCaptionEnabled(boolean enabled) {
         defaultCaptionEnabled = enabled;
         if (isContentInitialized()) {
@@ -330,32 +371,12 @@ public abstract class AbstractColorPickerField<COLOR_PICKER extends AbstractColo
         }
     }
 
-    public boolean isDefaultCaptionEnabled() {
-        return defaultCaptionEnabled;
-    }
-
-    public int getPositionX() {
-        return positionX;
-    }
-
-    public void setPositionX(int positionX) {
-        this.positionX = positionX;
-        if (isContentInitialized()) {
-            getContent().setPosition(positionX, positionY);
-        }
-    }
-
-    public int getPositionY() {
-        return positionY;
-    }
-
-    public void setPositionY(int positionY) {
-        this.positionY = positionY;
-        if (isContentInitialized()) {
-            getContent().setPosition(positionX, positionY);
-        }
-    }
-
+    /**
+     * Sets the position of the popup window
+     *
+     * @param x the x-coordinate
+     * @param y the y-coordinate
+     */
     public void setPosition(int x, int y) {
         this.positionX = x;
         this.positionY = y;
@@ -364,6 +385,11 @@ public abstract class AbstractColorPickerField<COLOR_PICKER extends AbstractColo
         }
     }
 
+    /**
+     * The style for the popup window
+     *
+     * @param style The style
+     */
     public void setPopupStyle(AbstractColorPicker.PopupStyle style) {
         popupStyle = style;
         if (isContentInitialized()) {
@@ -371,10 +397,11 @@ public abstract class AbstractColorPickerField<COLOR_PICKER extends AbstractColo
         }
     }
 
-    public AbstractColorPicker.PopupStyle getPopupStyle() {
-        return popupStyle;
-    }
-
+    /**
+     * Set the visibility of the RGB Tab
+     *
+     * @param visible The visibility
+     */
     public void setRGBVisibility(boolean visible) {
         rgbVisibility = visible;
         if (isContentInitialized()) {
@@ -382,10 +409,11 @@ public abstract class AbstractColorPickerField<COLOR_PICKER extends AbstractColo
         }
     }
 
-    public boolean getRGBVisibility() {
-        return rgbVisibility;
-    }
-
+    /**
+     * Set the visibility of the HSV Tab
+     *
+     * @param visible The visibility
+     */
     public void setHSVVisibility(boolean visible) {
         hsvVisibility = visible;
         if (isContentInitialized()) {
@@ -393,10 +421,11 @@ public abstract class AbstractColorPickerField<COLOR_PICKER extends AbstractColo
         }
     }
 
-    public boolean getHSVVisibility() {
-        return hsvVisibility;
-    }
-
+    /**
+     * Set the visibility of the Swatches Tab
+     *
+     * @param visible The visibility
+     */
     public void setSwatchesVisibility(boolean visible) {
         swatchesVisibility = visible;
         if (isContentInitialized()) {
@@ -404,10 +433,11 @@ public abstract class AbstractColorPickerField<COLOR_PICKER extends AbstractColo
         }
     }
 
-    public boolean getSwatchesVisibility() {
-        return swatchesVisibility;
-    }
-
+    /**
+     * Sets the visibility of the Color History
+     *
+     * @param visible The visibility
+     */
     public void setHistoryVisibility(boolean visible) {
         historyVisibility = visible;
         if (isContentInitialized()) {
@@ -415,10 +445,11 @@ public abstract class AbstractColorPickerField<COLOR_PICKER extends AbstractColo
         }
     }
 
-    public boolean getHistoryVisibility() {
-        return historyVisibility;
-    }
-
+    /**
+     * Sets the visibility of the CSS color code text field
+     *
+     * @param visible The visibility
+     */
     public void setTextfieldVisibility(boolean visible) {
         textfieldVisibility = visible;
         if (isContentInitialized()) {
@@ -426,27 +457,32 @@ public abstract class AbstractColorPickerField<COLOR_PICKER extends AbstractColo
         }
     }
 
-    public boolean getTextfieldVisibility() {
-        return textfieldVisibility;
-    }
-
+    /**
+     * Shows a popup-window for color selection.
+     */
     public void showPopup() {
+        showPopup = true;
         if (isContentInitialized()) {
             getContent().showPopup();
         }
     }
 
+    /**
+     * Hides a popup-window for color selection.
+     */
     public void hidePopup() {
+        showPopup = false;
         if (isContentInitialized()) {
             getContent().hidePopup();
         }
     }
 
-    public String getPopupCaption() {
-        return popupCaption;
-    }
-
-    public void setPopupCaption(String popupCaption) {
+    /**
+     * Sets the caption of the popup window
+     *
+     * @param popupCaption The caption of the popup window
+     */
+    protected void setPopupCaption(String popupCaption) {
         this.popupCaption = popupCaption;
         if (isContentInitialized()) {
             Logger.getLogger(AbstractColorPickerField.class.getName()).warning(

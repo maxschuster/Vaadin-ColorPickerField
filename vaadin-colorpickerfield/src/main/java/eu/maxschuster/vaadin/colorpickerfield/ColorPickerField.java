@@ -28,14 +28,28 @@ public class ColorPickerField extends AbstractColorPickerField<ColorPicker> {
 
     private static final String STYLE_NAME = "color-picker-field";
 
+    /**
+     * Instantiates a new color picker field.
+     */
     public ColorPickerField() {
         this(DEFAULT_POPUP_CAPTION, DEFAULT_INITIAL_COLOR);
     }
 
+    /**
+     * Instantiates a new color picker field.
+     * 
+     * @param popupCaption Caption of the popup window
+     */
     public ColorPickerField(String popupCaption) {
         this(popupCaption, DEFAULT_INITIAL_COLOR);
     }
 
+    /**
+     * Instantiates a new color picker field.
+     * 
+     * @param popupCaption Caption of the popup window
+     * @param initialColor Initial {@link Color}
+     */
     public ColorPickerField(String popupCaption, Color initialColor) {
         super(ColorPicker.class, popupCaption, initialColor);
         setPrimaryStyleName(STYLE_NAME);
