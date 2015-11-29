@@ -17,8 +17,7 @@ package eu.maxschuster.vaadin.colorpickerfield.converter;
 
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.shared.ui.colorpicker.Color;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Locale;
 
 /**
  * A {@link Converter} that can convert a {@link Color} to CSS rgba() color
@@ -26,68 +25,28 @@ import java.util.regex.Pattern;
  *
  * @author Max Schuster
  */
-public class RgbaToColorConverter extends RgbToColorConverter {
+public class RgbaToColorConverter extends AbstractRgbaColorConverter<String, Color> {
 
-    private static final long serialVersionUID = 2L;
-
-    private static final Pattern RGBA_PATTERN = Pattern.compile(
-            "^rgba\\(\\s*(\\d{0,3})\\s*,\\s*(\\d{0,3})\\s*,\\s*(\\d{0,3})\\s*,\\s*([01](\\.\\d+)?)\\s*\\)$",
-            Pattern.CASE_INSENSITIVE);
+    private static final long serialVersionUID = 3L;
 
     public RgbaToColorConverter() {
-        super();
+        super(String.class, Color.class);
     }
 
     @Override
-    protected String serialize(Color color) throws ConversionException {
-        double alpha = intToDouble(color.getAlpha());
-        String alphaString;
-        if (alpha == (long) alpha) {
-            alphaString = String.format("%d", (long) alpha);
-        } else {
-            alphaString = String.format("%s", alpha);
+    public Color convertToModel(String value, Class<? extends Color> targetType, Locale locale) throws ConversionException {
+        if (value == null) {
+            return null;
         }
-        return String.format("rgba(%d,%d,%d,%s)", color.getRed(),
-                color.getGreen(), color.getBlue(), alphaString);
+        return unserializeColor(value);
     }
 
     @Override
-    protected Color unserialize(String string) throws ConversionException {
-        Matcher m = RGBA_PATTERN.matcher(string);
-        if (!m.matches()) {
-            throw new ConversionException("Could not convert '" + string
-                    + "' to a css rgb color");
+    public String convertToPresentation(Color value, Class<? extends String> targetType, Locale locale) throws ConversionException {
+        if (value == null) {
+            return null;
         }
-        int red = parseColor(m.group(1));
-        int greed = parseColor(m.group(2));
-        int blue = parseColor(m.group(3));
-        int alpha = parseAlpha(m.group(4));
-        return new Color(red, greed, blue, alpha);
-    }
-
-    protected int parseAlpha(String colorString) throws ConversionException {
-        if (colorString == null) {
-            throw new ConversionException("Color string mustn't be null");
-        }
-        double alpha;
-        try {
-            alpha = Double.valueOf(colorString);
-        } catch (NumberFormatException e) {
-            throw new ConversionException("Can't convert color string '"
-                    + colorString + "' to double", e);
-        }
-        if (alpha < 0 || alpha > 1) {
-            throw new ConversionException("Illegal value of color '" + alpha + "'");
-        }
-        return doubleToInt(alpha);
-    }
-
-    protected double intToDouble(int alpha) {
-        return alpha / 255d;
-    }
-
-    protected int doubleToInt(double alpha) {
-        return (int) Math.round(alpha * 255d);
+        return serializeColor(value);
     }
 
 }

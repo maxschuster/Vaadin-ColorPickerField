@@ -23,10 +23,10 @@ import java.util.Arrays;
  * @author Max Schuster
  */
 public class HexToColorConverterTest extends
-        AbstractStringToColorConverterTest<HexToColorConverter> {
+        AbstractStringToColorConverterTest<HexToColorConverter, ColorToHexConverter> {
 
     public HexToColorConverterTest() {
-        super(new HexToColorConverter(),
+        super(new HexToColorConverter(), new ColorToHexConverter(),
                 Arrays.asList(new Color[]{
             new Color(255, 255, 255),
             new Color(15, 224, 0),

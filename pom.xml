@@ -5,7 +5,7 @@
     <groupId>eu.maxschuster</groupId>
     <artifactId>vaadin-colorpickerfield-root</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <name>ColorPickerField (Root)</name>
     <modules>
         <module>vaadin-colorpickerfield</module>

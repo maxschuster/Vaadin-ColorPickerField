@@ -17,52 +17,54 @@ package eu.maxschuster.vaadin.colorpickerfield.converter;
 
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.shared.ui.colorpicker.Color;
-import java.util.Locale;
 
 /**
- * A {@link Converter} that can convert a {@link Color} to a {@link String}
- * presentation
- *
+ * Base class for {@link Converter}s that convert to or from {@link Color}
+ * 
  * @author Max Schuster
+ * @param <PRESENTATION> The presentation type. Must be compatible with what
+ * {@link #getPresentationType()} returns.
+ * @param <MODEL> The model type. Must be compatible with what
+ * {@link #getModelType()} returns.
  */
-public abstract class AbstractStringToColorConverter extends AbstractToColorConverter<String> {
-
-    private static final long serialVersionUID = 2L;
+public abstract class AbstractColorConverter<PRESENTATION, MODEL> implements Converter<PRESENTATION, MODEL> {
+    
+    private static final long serialVersionUID = 1L;
 
     /**
-     * Constructs a new {@link AbstractStringToColorConverter}
+     * The presentation type
      */
-    public AbstractStringToColorConverter() {
-        super(String.class);
+    private final Class<PRESENTATION> presentationType;
+
+    /**
+     * The model type
+     */
+    private final Class<MODEL> modelType;
+
+    public AbstractColorConverter(Class<PRESENTATION> presentationType, Class<MODEL> modelType) {
+        this.presentationType = presentationType;
+        this.modelType = modelType;
+    }
+    
+    @Override
+    public Class<MODEL> getModelType() {
+        return this.modelType;
     }
 
     @Override
-    public Color convertToModel(String value, Class<? extends Color> targetType,
-            Locale locale) throws ConversionException {
-        if (value == null) {
-            return null;
-        }
-        return unserialize(value);
-    }
-
-    @Override
-    public String convertToPresentation(Color value, Class<? extends String> targetType,
-            Locale locale) throws ConversionException {
-        if (value == null) {
-            return null;
-        }
-        return serialize(value);
+    public Class<PRESENTATION> getPresentationType() {
+        return this.presentationType;
     }
 
     /**
      * Serializes the given {@link Color} as a {@link String}. The String must
-     * be unserialize by {@link #unserialize(java.lang.String)}
+     * be unserialize by {@link #unserializeColor(java.lang.String)}
      *
      * @param color The {@link Color} to serialize. Never {@code null}.
      * @return {@link Color} serialized as {@link String}
      * @throws ConversionException If the {@link Color} can't be serialized
      */
-    protected abstract String serialize(Color color) throws ConversionException;
+    protected abstract String serializeColor(Color color) throws ConversionException;
 
     /**
      * Unserializes the given {@link String} as a {@link Color}.
@@ -71,6 +73,6 @@ public abstract class AbstractStringToColorConverter extends AbstractToColorConv
      * @return {@link String} unserialized as {@link Color}
      * @throws ConversionException If the {@link String} can't be unserialized
      */
-    protected abstract Color unserialize(String string) throws ConversionException;
-
+    protected abstract Color unserializeColor(String string) throws ConversionException;
+    
 }

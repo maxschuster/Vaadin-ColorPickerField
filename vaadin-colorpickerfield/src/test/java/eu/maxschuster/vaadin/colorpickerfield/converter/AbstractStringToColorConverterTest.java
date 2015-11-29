@@ -20,84 +20,121 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import org.junit.Assert;
 
 /**
  *
  * @author Max Schuster
+ * @param <STC> The {@link String} to {@link Color} converter
+ * @param <CTS> The {@link Color} to {@link String} converter
  */
-public abstract class AbstractStringToColorConverterTest<CONVERTER extends AbstractStringToColorConverter> {
+public abstract class AbstractStringToColorConverterTest<STC extends AbstractColorConverter<String, Color>, CTS extends AbstractColorConverter<Color, String>> {
 
-    private final CONVERTER converter;
+    private final STC stringToColorConverter;
+    
+    private final CTS colorToStringConverter;
 
-    private final List<Color> models;
+    private final List<Color> colors;
 
-    private final List<String> presentations;
+    private final List<String> strings;
 
-    public AbstractStringToColorConverterTest(CONVERTER converter,
-            List<Color> models, List<String> presentations) {
-        this.converter = converter;
-        this.models = Collections.unmodifiableList(models);
-        this.presentations = Collections.unmodifiableList(presentations);
+    public AbstractStringToColorConverterTest(STC stringToColorConverter,
+            CTS colorToStringConverter, List<Color> colors, 
+            List<String> string) {
+        this.stringToColorConverter = stringToColorConverter;
+        this.colorToStringConverter = colorToStringConverter;
+        this.colors = Collections.unmodifiableList(colors);
+        this.strings = Collections.unmodifiableList(string);
     }
 
-    public CONVERTER getConverter() {
-        return converter;
+    public STC getStringToColorConverter() {
+        return stringToColorConverter;
+    }
+    
+    public CTS getColorToStringConverter() {
+        return colorToStringConverter;
     }
 
-    public List<Color> getModels() {
-        return models;
+    public List<Color> getColors() {
+        return colors;
     }
 
-    public List<String> getPresentations() {
-        return presentations;
+    public List<String> getString() {
+        return strings;
     }
 
     @Test
     public void convertModelToPresentation() {
-        assertEquals(models.size(), presentations.size());
-        CONVERTER conv = getConverter();
-        int size = presentations.size();
+        Assert.assertEquals(colors.size(), strings.size());
+        
+        int size = strings.size();
+        
+        STC stc = getStringToColorConverter();
+        CTS cts = getColorToStringConverter();
+        
         for (int i = 0; i < size; i++) {
-            String presentation = presentations.get(i);
-            Color model = models.get(i);
-            String convertedPresentation
-                    = conv.convertToPresentation(model, String.class, Locale.US);
-            assertEquals("Error converting model '" + model.getCSS()
-                    + "' to presentation '" + presentation + "'",
-                    convertedPresentation.toLowerCase(),
-                    presentation.toLowerCase());
+            String string = this.strings.get(i);
+            Color color = colors.get(i);
+            
+            String convertedString =
+                    stc.convertToPresentation(color, String.class, Locale.GERMANY);
+            Assert.assertEquals("Error converting model '" + color.getCSS()
+                    + "' to presentation '" + string + "'",
+                    convertedString.toLowerCase(Locale.GERMANY),
+                    string.toLowerCase(Locale.GERMANY));
+            
+            Color convertedColor = 
+                    cts.convertToPresentation(string, Color.class, Locale.GERMANY);
+            Assert.assertEquals("Error converting model '" + string
+                    + "' to presentation '" + color.getCSS() + "'",
+                    convertedColor, color);
         }
     }
 
     @Test
     public void convertPresentationToModel() {
-        assertEquals(models.size(), presentations.size());
-        CONVERTER conv = getConverter();
-        int size = models.size();
+        Assert.assertEquals(colors.size(), strings.size());
+        
+        int size = colors.size();
+        
+        STC stc = getStringToColorConverter();
+        CTS cts = getColorToStringConverter();
+        
         for (int i = 0; i < size; i++) {
-            String presentation = presentations.get(i);
-            Color model = models.get(i);
-            Color convertedModel
-                    = conv.convertToModel(presentation, Color.class, Locale.US);
-            assertEquals("Error converting presentation '" + presentation
-                    + "' to model '" + model.getCSS() + "'", convertedModel, model);
+            String string = this.strings.get(i);
+            Color color = colors.get(i);
+            
+            Color convertedColor =
+                    stc.convertToModel(string, Color.class, Locale.GERMANY);
+            Assert.assertEquals("Error converting presentation '" + string
+                    + "' to model '" + color.getCSS() + "'", convertedColor, color);
+            
+            String convertedString =
+                    cts.convertToModel(color, String.class, Locale.GERMANY);
+            Assert.assertEquals("Error converting presentation '" + color.getCSS()
+                    + "' to model '" + string + "'",
+                    convertedString.toLowerCase(Locale.GERMANY),
+                    string.toLowerCase(Locale.GERMANY));
         }
+        
     }
 
     @Test
     public void convertNullModelToPresentationShouldReturnNull() {
-        CONVERTER conv = getConverter();
-        assertNull(conv.convertToPresentation(null, String.class, Locale.US));
+        STC stc = getStringToColorConverter();
+        Assert.assertNull(stc.convertToPresentation(null, String.class, Locale.GERMANY));
+        
+        CTS cts = getColorToStringConverter();
+        Assert.assertNull(cts.convertToPresentation(null, Color.class, Locale.GERMANY));
     }
 
     @Test
     public void convertNullPresentationToModelShouldReturnNull() {
-        CONVERTER conv = getConverter();
-        assertNull(conv.convertToModel(null, Color.class, Locale.US));
+        STC stc = getStringToColorConverter();
+        Assert.assertNull(stc.convertToModel(null, Color.class, Locale.GERMANY));
+        
+        CTS cts = getColorToStringConverter();
+        Assert.assertNull(cts.convertToModel(null, String.class, Locale.GERMANY));
     }
 
 }

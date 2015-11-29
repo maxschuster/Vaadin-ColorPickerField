@@ -16,10 +16,14 @@ import com.vaadin.shared.ui.colorpicker.Color;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
-import eu.maxschuster.vaadin.colorpickerfield.converter.AbstractStringToColorConverter;
+import eu.maxschuster.vaadin.colorpickerfield.converter.AbstractColorConverter;
 import eu.maxschuster.vaadin.colorpickerfield.converter.HexToColorConverter;
 import eu.maxschuster.vaadin.colorpickerfield.converter.RgbToColorConverter;
 import eu.maxschuster.vaadin.colorpickerfield.converter.RgbaToColorConverter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
  * Demo UI of the Vaadin-ColorPickerField add-on
@@ -29,6 +33,7 @@ import eu.maxschuster.vaadin.colorpickerfield.converter.RgbaToColorConverter;
 @Theme("valo")
 @Title("ColorPickerField Add-on Demo")
 @PreserveOnRefresh
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class DemoUI extends UI {
 
     private static final long serialVersionUID = 1L;
@@ -59,27 +64,25 @@ public class DemoUI extends UI {
         // define the container properties
         converters.addContainerProperty("name", String.class, null);
         converters.addContainerProperty("instance",
-                AbstractStringToColorConverter.class, null);
+                AbstractColorConverter.class, null);
         
         // An array of our available converters
-        AbstractStringToColorConverter[] converterTypes = 
-            new AbstractStringToColorConverter[]{
+        AbstractColorConverter[] converterTypes = 
+            new AbstractColorConverter[]{
                 new HexToColorConverter(),
                 new RgbToColorConverter(),
                 new RgbaToColorConverter()
             };
         
         // Fill converters container with our available converters
-        for (AbstractStringToColorConverter converter : converterTypes) {
+        for (AbstractColorConverter converter : converterTypes) {
             Object itemId = converters.addItem();
             Item item = converters.getItem(itemId);
 
-            @SuppressWarnings("unchecked")
             Property<String> nameProperty = item.getItemProperty("name");
             nameProperty.setValue(converter.getClass().getSimpleName());
 
-            @SuppressWarnings("unchecked")
-            Property<AbstractStringToColorConverter> instanceProperty
+            Property<AbstractColorConverter> instanceProperty
                     = item.getItemProperty("instance");
             instanceProperty.setValue(converter);
         }
@@ -105,6 +108,8 @@ public class DemoUI extends UI {
         colorProperty.setValue(new Color(0, 180, 240)); // Vaadin blue ;-)
         colorProperty.addReadOnlyStatusChangeListener(
                 new Property.ReadOnlyStatusChangeListener() {
+                    
+            private static final long serialVersionUID = 1L;
 
             @Override
             public void readOnlyStatusChange(Property.ReadOnlyStatusChangeEvent event) {
@@ -124,7 +129,7 @@ public class DemoUI extends UI {
             public void valueChange(Property.ValueChangeEvent event) {
                 Object itemId = event.getProperty().getValue();
                 Item item = converters.getItem(itemId);
-                AbstractStringToColorConverter converter = (AbstractStringToColorConverter) 
+                AbstractColorConverter converter = (AbstractColorConverter) 
                         item.getItemProperty("instance").getValue();
                 l.colorTextField.setConverter(converter);
             }
@@ -148,6 +153,8 @@ public class DemoUI extends UI {
         });
         
         l.clearButton.addClickListener(new Button.ClickListener() {
+            
+            private static final long serialVersionUID = 1L;
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -169,8 +176,22 @@ public class DemoUI extends UI {
             }
         });
         
-        
         backgroundColorExtension.setBackgoundColor(colorProperty.getValue());
+    }
+    
+    public static String getVersion() {
+        String version = "UNKNOWN";
+        
+        try {
+            InputStream is = DemoUI.class.getResourceAsStream("version.properties");
+            Properties properties = new Properties();
+            properties.load(is);
+            version = properties.getProperty("version");
+        } catch (IOException e) {
+            Logger.getLogger(DemoUI.class.getName()).severe("Error loading");
+        }
+        
+        return version;
     }
 
 }

@@ -20,35 +20,33 @@ import com.vaadin.shared.ui.colorpicker.Color;
 import java.util.Locale;
 
 /**
- * A {@link Converter} that can convert a {@link Color} to CSS rgb() color
- * notation and back
+ * A {@link Converter} that can convert a CSS rgba() color to a {@link Color}
+ * and back
  *
  * @author Max Schuster
  */
-public class RgbToColorConverter extends AbstractRgbColorConverter<String, Color> {
+public class ColorToRgbaConverter extends AbstractRgbaColorConverter<Color, String> {
+    
+    private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 3L;
-
-    public RgbToColorConverter() {
-        super(String.class, Color.class);
+    public ColorToRgbaConverter() {
+        super(Color.class, String.class);
     }
 
     @Override
-    public Color convertToModel(String value, Class<? extends Color> targetType, Locale locale) throws ConversionException {
-        if (value == null) {
-            return null;
-        }
-        return unserializeColor(value);
-    }
-
-    @Override
-    public String convertToPresentation(Color value, Class<? extends String> targetType, Locale locale) throws ConversionException {
+    public String convertToModel(Color value, Class<? extends String> targetType, Locale locale) throws ConversionException {
         if (value == null) {
             return null;
         }
         return serializeColor(value);
     }
 
-    
+    @Override
+    public Color convertToPresentation(String value, Class<? extends Color> targetType, Locale locale) throws ConversionException {
+        if (value == null) {
+            return null;
+        }
+        return unserializeColor(value);
+    }
     
 }

@@ -17,8 +17,7 @@ package eu.maxschuster.vaadin.colorpickerfield.converter;
 
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.shared.ui.colorpicker.Color;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Locale;
 
 /**
  * A {@link Converter} that can convert a {@link Color} to CSS hex color
@@ -26,35 +25,28 @@ import java.util.regex.Pattern;
  * 
  * @author Max Schuster
  */
-public class HexToColorConverter extends AbstractStringToColorConverter {
+public class HexToColorConverter extends AbstractHexColorConverter<String, Color> {
 
-    private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 3L;
 
-    private static final Pattern HEX_PATTERN = Pattern.compile(
-            "^(#)?([0-9a-f]{3}|[0-9a-f]{6})$", Pattern.CASE_INSENSITIVE);
-
-    @Override
-    protected String serialize(Color color) throws ConversionException {
-        return color.getCSS();
+    public HexToColorConverter() {
+        super(String.class, Color.class);
     }
 
     @Override
-    protected Color unserialize(String string) throws ConversionException {
-        Matcher m = HEX_PATTERN.matcher(string);
-        if (!m.matches()) {
-            throw new ConversionException("Could not convert '" + string
-                    + "' to a css hex color");
+    public Color convertToModel(String value, Class<? extends Color> targetType, Locale locale) throws ConversionException {
+        if (value == null) {
+            return null;
         }
-        String hex = m.group(2);
-        if (hex.length() == 3) {
-            // Maybe a mathematically whay to do this?
-            StringBuilder sb = new StringBuilder(6);
-            for (char character : hex.toCharArray()) {
-                sb.append(character).append(character);
-            }
-            hex = sb.toString();
-        }
-        return new Color(Integer.parseInt(hex, 16));
+        return unserializeColor(value);
     }
 
+    @Override
+    public String convertToPresentation(Color value, Class<? extends String> targetType, Locale locale) throws ConversionException {
+        if (value == null) {
+            return null;
+        }
+        return serializeColor(value);
+    }
+    
 }

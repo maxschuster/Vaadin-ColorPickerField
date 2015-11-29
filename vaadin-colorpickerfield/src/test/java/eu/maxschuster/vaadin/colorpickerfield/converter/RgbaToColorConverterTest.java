@@ -23,10 +23,10 @@ import java.util.Arrays;
  * @author Max Schuster
  */
 public class RgbaToColorConverterTest extends
-        AbstractStringToColorConverterTest<RgbaToColorConverter> {
+        AbstractStringToColorConverterTest<RgbaToColorConverter, ColorToRgbaConverter> {
 
     public RgbaToColorConverterTest() {
-        super(new RgbaToColorConverter(),
+        super(new RgbaToColorConverter(), new ColorToRgbaConverter(),
                 Arrays.asList(new Color[]{
             new Color(255, 255, 255, 255),
             new Color(15, 224, 0, 153),
