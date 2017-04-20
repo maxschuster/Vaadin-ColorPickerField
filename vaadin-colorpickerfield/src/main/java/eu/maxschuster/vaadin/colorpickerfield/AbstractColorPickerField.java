@@ -288,6 +288,7 @@ public abstract class AbstractColorPickerField<COLOR_PICKER extends AbstractColo
     @Override
     public void writeDesign(Element design, DesignContext designContext) {
         super.writeDesign(design, designContext);
+        // FIXME: 2017. 04. 20. have to be refactored to v7-compatibility
 //        Attributes attributes = design.attributes();
 //
 //        DesignAttributeHandler.writeAttribute("color", attributes,

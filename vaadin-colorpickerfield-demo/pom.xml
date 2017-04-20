@@ -67,10 +67,15 @@
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-client-compiler</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-compatibility-themes</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-compatibility-client</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
