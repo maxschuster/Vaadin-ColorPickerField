@@ -1,25 +1,25 @@
 package eu.maxschuster.vaadin.colorpickerfield.demo;
 
 import com.vaadin.annotations.PreserveOnRefresh;
-import javax.servlet.annotation.WebServlet;
-
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
-import com.vaadin.data.Item;
-import com.vaadin.data.Property;
-import com.vaadin.data.util.IndexedContainer;
-import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.shared.ui.colorpicker.Color;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
+import com.vaadin.v7.data.Item;
+import com.vaadin.v7.data.Property;
+import com.vaadin.v7.data.util.IndexedContainer;
+import com.vaadin.v7.data.util.ObjectProperty;
+import com.vaadin.v7.shared.ui.colorpicker.Color;
 import eu.maxschuster.vaadin.colorpickerfield.converter.AbstractColorConverter;
 import eu.maxschuster.vaadin.colorpickerfield.converter.HexToColorConverter;
 import eu.maxschuster.vaadin.colorpickerfield.converter.RgbToColorConverter;
 import eu.maxschuster.vaadin.colorpickerfield.converter.RgbaToColorConverter;
+
+import javax.servlet.annotation.WebServlet;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;

@@ -15,7 +15,8 @@
  */
 package eu.maxschuster.vaadin.colorpickerfield.converter;
 
-import com.vaadin.shared.ui.colorpicker.Color;
+import com.vaadin.v7.shared.ui.colorpicker.Color;
+
 import java.util.Arrays;
 
 /**
@@ -27,12 +28,12 @@ public class RgbaToColorConverterTest extends
 
     public RgbaToColorConverterTest() {
         super(new RgbaToColorConverter(), new ColorToRgbaConverter(),
-                Arrays.asList(new Color[]{
+              Arrays.asList(new Color[]{
             new Color(255, 255, 255, 255),
             new Color(15, 224, 0, 153),
             new Color(0, 0, 0, 0)
         }),
-                Arrays.asList(new String[]{
+              Arrays.asList(new String[]{
             "rgba(255,255,255,1)",
             "rgba(15,224,0,0.6)",
             "rgba(0,0,0,0)"

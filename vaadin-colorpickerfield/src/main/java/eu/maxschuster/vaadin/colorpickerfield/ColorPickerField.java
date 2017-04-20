@@ -15,8 +15,8 @@
  */
 package eu.maxschuster.vaadin.colorpickerfield;
 
-import com.vaadin.shared.ui.colorpicker.Color;
-import com.vaadin.ui.ColorPicker;
+import com.vaadin.v7.shared.ui.colorpicker.Color;
+import com.vaadin.v7.ui.ColorPicker;
 
 /**
  *

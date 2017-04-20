@@ -15,12 +15,13 @@
  */
 package eu.maxschuster.vaadin.colorpickerfield.converter;
 
-import com.vaadin.shared.ui.colorpicker.Color;
+import com.vaadin.v7.shared.ui.colorpicker.Color;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import org.junit.Test;
-import org.junit.Assert;
 
 /**
  *

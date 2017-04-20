@@ -18,7 +18,7 @@ package eu.maxschuster.vaadin.colorpickerfield.demo;
 import com.vaadin.annotations.JavaScript;
 import com.vaadin.server.AbstractClientConnector;
 import com.vaadin.server.AbstractJavaScriptExtension;
-import com.vaadin.shared.ui.colorpicker.Color;
+import com.vaadin.v7.shared.ui.colorpicker.Color;
 
 /**
  * A small javascript extension that changes the background color of an

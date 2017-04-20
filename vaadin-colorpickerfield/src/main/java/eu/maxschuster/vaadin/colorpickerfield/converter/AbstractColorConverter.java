@@ -15,8 +15,8 @@
  */
 package eu.maxschuster.vaadin.colorpickerfield.converter;
 
-import com.vaadin.data.util.converter.Converter;
-import com.vaadin.shared.ui.colorpicker.Color;
+import com.vaadin.v7.data.util.converter.Converter;
+import com.vaadin.v7.shared.ui.colorpicker.Color;
 
 /**
  * Base class for {@link Converter}s that convert to or from {@link Color}

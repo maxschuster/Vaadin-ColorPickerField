@@ -15,7 +15,8 @@
  */
 package eu.maxschuster.vaadin.colorpickerfield.converter;
 
-import com.vaadin.shared.ui.colorpicker.Color;
+import com.vaadin.v7.shared.ui.colorpicker.Color;
+
 import java.util.Arrays;
 
 /**
@@ -27,12 +28,12 @@ public class RgbToColorConverterTest extends
 
     public RgbToColorConverterTest() {
         super(new RgbToColorConverter(), new ColorToRgbConverter(),
-                Arrays.asList(new Color[]{
+              Arrays.asList(new Color[]{
             new Color(255, 255, 255),
             new Color(15, 224, 0),
             new Color(0, 0, 0)
         }),
-                Arrays.asList(new String[]{
+              Arrays.asList(new String[]{
             "rgb(255,255,255)",
             "rgb(15,224,0)",
             "rgb(0,0,0)"
