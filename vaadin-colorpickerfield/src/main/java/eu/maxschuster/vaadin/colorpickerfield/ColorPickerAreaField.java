@@ -16,10 +16,10 @@
 package eu.maxschuster.vaadin.colorpickerfield;
 
 import com.vaadin.annotations.StyleSheet;
-import com.vaadin.shared.ui.colorpicker.Color;
-import com.vaadin.ui.ColorPicker;
-import com.vaadin.ui.ColorPickerArea;
-import com.vaadin.ui.Field;
+import com.vaadin.v7.shared.ui.colorpicker.Color;
+import com.vaadin.v7.ui.ColorPicker;
+import com.vaadin.v7.ui.ColorPickerArea;
+import com.vaadin.v7.ui.Field;
 
 /**
  * A class that defines area-like implementation for a color picker {@link Field}.

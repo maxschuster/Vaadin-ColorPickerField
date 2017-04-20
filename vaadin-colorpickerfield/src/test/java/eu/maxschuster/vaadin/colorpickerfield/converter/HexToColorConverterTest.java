@@ -15,7 +15,8 @@
  */
 package eu.maxschuster.vaadin.colorpickerfield.converter;
 
-import com.vaadin.shared.ui.colorpicker.Color;
+import com.vaadin.v7.shared.ui.colorpicker.Color;
+
 import java.util.Arrays;
 
 /**
@@ -27,13 +28,13 @@ public class HexToColorConverterTest extends
 
     public HexToColorConverterTest() {
         super(new HexToColorConverter(), new ColorToHexConverter(),
-                Arrays.asList(new Color[]{
+              Arrays.asList(new Color[]{
             new Color(255, 255, 255),
             new Color(15, 224, 0),
             new Color(255, 255, 255),
             new Color(0, 0, 0)
         }),
-                Arrays.asList(new String[]{
+              Arrays.asList(new String[]{
             "#ffFFff",
             "#0FE000",
             "#ffffff",

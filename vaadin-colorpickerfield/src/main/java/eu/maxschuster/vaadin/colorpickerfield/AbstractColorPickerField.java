@@ -15,20 +15,21 @@
  */
 package eu.maxschuster.vaadin.colorpickerfield;
 
-import com.vaadin.data.Property;
-import com.vaadin.shared.ui.colorpicker.Color;
-import com.vaadin.ui.AbstractColorPicker;
-import com.vaadin.ui.CustomField;
-import com.vaadin.ui.Field;
-import com.vaadin.ui.components.colorpicker.ColorChangeEvent;
-import com.vaadin.ui.components.colorpicker.ColorChangeListener;
 import com.vaadin.ui.declarative.DesignAttributeHandler;
 import com.vaadin.ui.declarative.DesignContext;
+import com.vaadin.v7.data.Property;
+import com.vaadin.v7.shared.ui.colorpicker.Color;
+import com.vaadin.v7.ui.AbstractColorPicker;
+import com.vaadin.v7.ui.CustomField;
+import com.vaadin.v7.ui.Field;
+import com.vaadin.v7.ui.components.colorpicker.ColorChangeEvent;
+import com.vaadin.v7.ui.components.colorpicker.ColorChangeListener;
+import org.jsoup.nodes.Attributes;
+import org.jsoup.nodes.Element;
+
 import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.logging.Logger;
-import org.jsoup.nodes.Attributes;
-import org.jsoup.nodes.Element;
 
 /**
  * A wrapper for {@link AbstractColorPicker}s that implements the {@link Field}.
@@ -287,15 +288,16 @@ public abstract class AbstractColorPickerField<COLOR_PICKER extends AbstractColo
     @Override
     public void writeDesign(Element design, DesignContext designContext) {
         super.writeDesign(design, designContext);
-        Attributes attributes = design.attributes();
-
-        DesignAttributeHandler.writeAttribute("color", attributes,
-                getClientColor(getValue()).getCSS(), Color.WHITE.getCSS(), String.class);
-        DesignAttributeHandler.writeAttribute("popup-style", attributes,
-                (popupStyle == AbstractColorPicker.PopupStyle.POPUP_NORMAL ? "normal" : "simple"),
-                "normal", String.class);
-        DesignAttributeHandler.writeAttribute("position", attributes, positionX
-                + "," + positionY, "0,0", String.class);
+        // FIXME: 2017. 04. 20. have to be refactored to v7-compatibility
+//        Attributes attributes = design.attributes();
+//
+//        DesignAttributeHandler.writeAttribute("color", attributes,
+//                getClientColor(getValue()).getCSS(), Color.WHITE.getCSS(), String.class);
+//        DesignAttributeHandler.writeAttribute("popup-style", attributes,
+//                (popupStyle == AbstractColorPicker.PopupStyle.POPUP_NORMAL ? "normal" : "simple"),
+//                "normal", String.class);
+//        DesignAttributeHandler.writeAttribute("position", attributes, positionX
+//                + "," + positionY, "0,0", String.class);
     }
 
     /**

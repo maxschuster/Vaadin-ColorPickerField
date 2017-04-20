@@ -5,7 +5,7 @@
     <groupId>eu.maxschuster</groupId>
     <artifactId>vaadin-colorpickerfield</artifactId>
     <packaging>bundle</packaging>
-    <version>1.1.0</version>
+    <version>1.1.0-V8-compatibility</version>
     
     <name>ColorPickerField</name>
     <description>Vaadin color picker field.</description>
@@ -13,8 +13,11 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <vaadin.version>7.4.0</vaadin.version>
+        <vaadin.version>8.0.5</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <javadocExecutable>${java.home}/../bin/javadoc</javadocExecutable>
 
         <!-- ZIP Manifest fields -->
         <Implementation-Version>${project.version}</Implementation-Version>
@@ -73,12 +76,12 @@
     <dependencies>
         <dependency>
             <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-server</artifactId>
+            <artifactId>vaadin-compatibility-server</artifactId>
             <version>${vaadin.version}</version>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-client</artifactId>
+            <artifactId>vaadin-compatibility-client</artifactId>
             <version>${vaadin.version}</version>
             <scope>provided</scope>
         </dependency>
@@ -100,8 +103,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.0</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.source}</target>
                 </configuration>
             </plugin>
 
@@ -183,7 +186,7 @@
                         <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
                         <Export-Package>
                             eu.maxschuster.vaadin.colorpickerfield,
-                            eu.maxschuster.vaadin.colorpickerfield.converter,
+                            eu.maxschuster.vaadin.colorpickerfield.v7.converter,
                             eu.maxschuster.vaadin.colorpickerfield.shared
                         </Export-Package>
                         <Import-Package>!com.google.gwt.*,!com.vaadin.client.*,*</Import-Package>
@@ -201,20 +204,20 @@
                 </executions>
             </plugin>
             
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-gpg-plugin</artifactId>-->
+                <!--<version>1.6</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>sign-artifacts</id>-->
+                        <!--<phase>verify</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>sign</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
             
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>

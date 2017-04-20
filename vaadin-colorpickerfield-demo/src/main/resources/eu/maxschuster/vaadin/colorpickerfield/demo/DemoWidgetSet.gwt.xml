@@ -27,10 +27,13 @@
     <!-- <set-configuration-property name="devModeRedirectEnabled" value="true" /> -->
 
 
-    <inherits name="com.vaadin.DefaultWidgetSet" />
     
-    <generate-with class="eu.maxschuster.vaadin.colorpickerfield.demo.OptimizedConnectorBundleLoaderFactory">
-        <when-type-assignable class="com.vaadin.client.metadata.ConnectorBundleLoader" />
-    </generate-with>
     
+    <!--<generate-with class="eu.maxschuster.vaadin.colorpickerfield.demo.OptimizedConnectorBundleLoaderFactory">-->
+        <!--<when-type-assignable class="com.vaadin.client.metadata.ConnectorBundleLoader" />-->
+    <!--</generate-with>-->
+    
+
+    <!--<inherits name="com.vaadin.DefaultWidgetSet" />-->
+    <inherits name="com.vaadin.v7.Vaadin7WidgetSet" />
 </module>
